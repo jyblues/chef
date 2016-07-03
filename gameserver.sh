@@ -1,11 +1,11 @@
-# cd ~
-# curl -L https://www.opscode.com/chef/install.sh | bash
-# chef-solo -v
+cd ~
+curl -L https://www.opscode.com/chef/install.sh | bash
+chef-solo -v
 
 # chef-dk install..
-cd ~
-wget https://opscode-omnibus-packages.s3.amazonaws.com/el/6/x86_64/chefdk-0.4.0-1.x86_64.rpm
-rpm -ivh chefdk-0.4.0-1.x86_64.rpm 
+# cd ~
+# wget https://opscode-omnibus-packages.s3.amazonaws.com/el/6/x86_64/chefdk-0.4.0-1.x86_64.rpm
+# rpm -ivh chefdk-0.4.0-1.x86_64.rpm 
 
 # chef-repo init
 chef generate repo chef-repo
