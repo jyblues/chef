@@ -41,10 +41,10 @@ cd phpapp
 
 echo 'depends "apache2"' >> ~/chef-repo/cookbooks/phpapp/metadata.rb
 
-echo 'include_recipe "apache2"' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
-echo 'apache_site "default" do' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
-echo '  enable true' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
-echo end >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
+echo 'include_recipe "apache2"' >> ~/chef-repo/cookbooks/phpapp/recipes/default.rb
+echo 'apache_site "default" do' >> ~/chef-repo/cookbooks/phpapp/recipes/default.rb
+echo '  enable true' >> ~/chef-repo/cookbooks/phpapp/recipes/default.rb
+echo end >> ~/chef-repo/cookbooks/phpapp/recipes/default.rb
 
 cd ../..
 
