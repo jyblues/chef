@@ -9,7 +9,7 @@ rm master
 
 cd chef-repo/
 mkdir .chef
-echo '"cookbook_path [ '/root/chef-repo/cookbooks' ]"' >> .chef/knife.rb
+echo "cookbook_path [ '/root/chef-repo/cookbooks' ]" >> .chef/knife.rb
 
 knife cookbook create phpapp
 
@@ -39,20 +39,20 @@ rm pacman*.tar.gz
 
 cd phpapp
 
-echo 'depends "apache2"' >> ~/chef-repo/cookbooks/metadata.rb
+echo depends "apache2" >> ~/chef-repo/cookbooks/metadata.rb
 
-echo 'include_recipe "apache2"' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
-echo 'apache_site "default" do' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
-echo '  enable true' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
-echo 'end' >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
+echo include_recipe "apache2" >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
+echo apache_site "default" do >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
+echo   enable true >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
+echo end >> ~/chef-repo/cookbooks/apache2/recipes/default.rb
 
 cd ../..
 
-echo 'file_cache_path "/root/chef-solo"' >> ~/chef-repo/solo.rb
-echo 'cookbook_path "/root/chef-repo/cookbooks"' >> ~/chef-repo/solo.rb
+echo file_cache_path "/root/chef-solo" >> ~/chef-repo/solo.rb
+echo cookbook_path "/root/chef-repo/cookbooks" >> ~/chef-repo/solo.rb
 
-echo '{' >> ~/chef-repo/web.json
-echo '  "run_list": [ "recipe[apt]", "recipe[phpapp]" ]' >> ~/chef-repo/web.json
-echo '}' >> ~/chef-repo/web.json
+echo { >> ~/chef-repo/web.json
+echo   "run_list": [ "recipe[apt]", "recipe[phpapp]" ] >> ~/chef-repo/web.json
+echo } >> ~/chef-repo/web.json
 
 chef-solo -c solo.rb -j web.json
