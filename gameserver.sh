@@ -11,9 +11,9 @@ cd chef-repo/
 mkdir .chef
 echo "cookbook_path [ '/root/chef-repo/cookbooks' ]" >> .chef/knife.rb
 
-knife cookbook create gamesever
+knife cookbook create gameserver
 
-cd cookbooks/gamesever
+cd cookbooks/gameserver
 
 cd ..
 
@@ -37,22 +37,22 @@ knife cookbook site download pacman
 tar zxf pacman*
 rm pacman*.tar.gz
 
-cd gamesever
+cd gameserver
 
-echo 'depends "apache2"' >> ~/chef-repo/cookbooks/gamesever/metadata.rb
+echo 'depends "apache2"' >> ~/chef-repo/cookbooks/gameserver/metadata.rb
 
-echo 'include_recipe "apache2"' >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
-echo 'apache_site "default" do' >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
-echo '  enable true' >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
-echo end >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
+echo 'include_recipe "apache2"' >> ~/chef-repo/cookbooks/gameserver/recipes/default.rb
+echo 'apache_site "default" do' >> ~/chef-repo/cookbooks/gameserver/recipes/default.rb
+echo '  enable true' >> ~/chef-repo/cookbooks/gameserver/recipes/default.rb
+echo end >> ~/chef-repo/cookbooks/gameserver/recipes/default.rb
 
 cd ../..
 
 echo 'file_cache_path "/root/chef-solo"' >> ~/chef-repo/solo.rb
 echo 'cookbook_path "/root/chef-repo/cookbooks"' >> ~/chef-repo/solo.rb
 
-echo { >> ~/chef-repo/web.json
-echo ' "run_list": [ "recipe[apt]", "recipe[gamesever]" ]' >> ~/chef-repo/web.json
-echo } >> ~/chef-repo/web.json
+echo { >> ~/chef-repo/localhost.json
+echo ' "run_list": [ "recipe[apt]", "recipe[gameserver]" ]' >> ~/chef-repo/localhost.json
+echo } >> ~/chef-repo/localhost.json
 
-chef-solo -c solo.rb -j web.json
+chef-solo -c solo.rb -j localhost.json
