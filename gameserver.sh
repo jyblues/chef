@@ -17,6 +17,26 @@ cd cookbooks/gameserver
 
 cd ..
 
+knife cookbook site download yum-epel
+tar zxf yum-epel*
+rm yum-epel*.tar.gz
+
+knife cookbook site download bluepill
+tar zxf bluepill*
+rm bluepill*.tar.gz
+
+knife cookbook site download ohai
+tar zxf ohai*
+rm ohai*.tar.gz
+
+knife cookbook site download runit
+tar zxf runit*
+rm runit*.tar.gz
+
+knife cookbook site download build-essential
+tar zxf build-essential*
+rm build-essential*.tar.gz
+
 knife cookbook site download nginx
 tar zxf nginx*
 rm nginx*.tar.gz
