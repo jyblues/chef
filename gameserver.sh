@@ -2,32 +2,57 @@ cd ~
 curl -L https://www.opscode.com/chef/install.sh | bash
 chef-solo -v
 
-# chef-dk install..
-# cd ~
-# wget https://opscode-omnibus-packages.s3.amazonaws.com/el/6/x86_64/chefdk-0.4.0-1.x86_64.rpm
-# rpm -ivh chefdk-0.4.0-1.x86_64.rpm 
+wget http://github.com/opscode/chef-repo/tarball/master
+tar -zxf master
+mv chef-chef-repo* chef-repo
+rm master
 
-# chef-repo init
-chef generate repo chef-repo
+cd chef-repo/
+mkdir .chef
+echo "cookbook_path [ '/root/chef-repo/cookbooks' ]" >> .chef/knife.rb
 
-# knife setting
-knife configure
+knife cookbook create gamesever
 
-# cookbook generate
-cd chef-repo
-knife cookbook create gameserver -o cookbooks
+cd cookbooks/gamesever
 
-# recipe.json 
-echo '// localhost.json' >> /root/chef-repo/localhost.json
-echo '{' >> /root/chef-repo/localhost.json
-echo '  "run_list": [' >> /root/chef-repo/localhost.json
-echo '    "recipe[nginx]"' >> /root/chef-repo/localhost.json
-echo '    ]' >> /root/chef-repo/localhost.json
-echo '}' >> /root/chef-repo/localhost.json
+cd ..
 
-# recipe.ruby(/root/chef-repo/solo.rb)
-echo 'file_cache_path "/tmp/chef-solo"' >> /root/chef-repo/solo.rb
-echo 'cookbook_path ["/root/chef-repo/cookbooks"]' >> /root/chef-repo/solo.rb
+knife cookbook site download apache2
+tar zxf apache2*
+rm apache2*.tar.gz
 
-# chef execute
-sudo chef-solo -c solo.rb -j localhost.rb
+knife cookbook site download apt
+tar zxf apt*
+rm apt*.tar.gz
+
+knife cookbook site download iptables
+tar zxf iptables*
+rm iptables*.tar.gz
+
+knife cookbook site download logrotate
+tar zxf logrotate*
+rm logrotate*.tar.gz
+
+knife cookbook site download pacman
+tar zxf pacman*
+rm pacman*.tar.gz
+
+cd gamesever
+
+echo 'depends "apache2"' >> ~/chef-repo/cookbooks/gamesever/metadata.rb
+
+echo 'include_recipe "apache2"' >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
+echo 'apache_site "default" do' >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
+echo '  enable true' >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
+echo end >> ~/chef-repo/cookbooks/gamesever/recipes/default.rb
+
+cd ../..
+
+echo 'file_cache_path "/root/chef-solo"' >> ~/chef-repo/solo.rb
+echo 'cookbook_path "/root/chef-repo/cookbooks"' >> ~/chef-repo/solo.rb
+
+echo { >> ~/chef-repo/web.json
+echo ' "run_list": [ "recipe[apt]", "recipe[gamesever]" ]' >> ~/chef-repo/web.json
+echo } >> ~/chef-repo/web.json
+
+chef-solo -c solo.rb -j web.json
