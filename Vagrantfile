@@ -15,6 +15,7 @@ cd ~
 git clone https://github.com/jyblues/chef.git
 sudo chmod +x ./chef/gameserver.sh
 sudo chmod +x ./chef/test.sh
+sudo chmod +x ./chef/install_ruby_and_chef.sh
 SCRIPT
 
 Vagrant.configure("2") do |config|
