@@ -3,49 +3,33 @@
 
 def define_machine_name(config, name)
   config.vm.provider "virtualbox" do |v|
-  v.name = name
+    v.name = name
+  end
 end
-end
+
+# 1. Ruby install
+# 2. get a git
+$script = <<SCRIPT
+gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A
+1703113804BB82D39DC0E3
+curl -sSL https://get.rvm.io | bash -s stable
+
+source /etc/profile.d/rvm.sh
+
+cd ~
+yum install -y git
+git clone https://github.com/jyblues/chef.git
+sudo chmod +x ./chef/gameserver.sh
+sudo chmod +x ./chef/test.sh
+SCRIPT
 
 Vagrant.configure("2") do |config|
-  config.vm.define :chef_server, primary: true do |cfg|
+  config.vm.define :game_server, primary: true do |cfg|
     cfg.vm.box = "base"
-    cfg.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.2_chef-provisionerless.box"
-    cfg.vm.network :private_network, ip: "192.168.30.10"
-    cfg.vm.host_name = "chef_server"
+    cfg.vm.box_url = "https://f0fff3908f081cb6461b407be80daf97f07ac418.googledrive.com/host/0BwtuV7VyVTSkUG1PM3pCeDJ4dVE/centos7.box"
+    cfg.vm.network "public_network", ip: "192.168.219.200"
+    define_machine_name cfg, "game_server"
 
-    define_machine_name cfg, "chef_server"
-  end
-  config.vm.define :workstation do |cfg|
-    cfg.vm.box = "base"
-    cfg.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.2_chef-provisionerless.box"
-    cfg.vm.network :private_network, ip: "192.168.30.20"
-    cfg.vm.host_name = "workstation"
-
-    define_machine_name cfg, "workstation"
-  end
-  config.vm.define :node01 do |cfg|
-    cfg.vm.box = "base"
-    cfg.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.2_chef-provisionerless.box"
-    cfg.vm.network :private_network, ip: "192.168.30.21"
-    cfg.vm.host_name = "node01"
-
-    define_machine_name cfg, "node01"
-  end
-  config.vm.define :node02 do |cfg|
-    cfg.vm.box = "base"
-    cfg.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.2_chef-provisionerless.box"
-    cfg.vm.network :private_network, ip: "192.168.30.22"
-    cfg.vm.host_name = "node02"
-
-    define_machine_name cfg, "node02"
-  end
-  config.vm.define :node03 do |cfg|
-    cfg.vm.box = "base"
-    cfg.vm.box_url = "http://opscode-vm-bento.s3.amazonaws.com/vagrant/virtualbox/opscode_centos-7.2_chef-provisionerless.box"
-    cfg.vm.network :private_network, ip: "192.168.30.23"
-    cfg.vm.host_name = "node03"
-
-    define_machine_name cfg, "node03"
+    cfg.vm.provision "shell", inline: $script
   end
 end
