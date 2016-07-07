@@ -10,14 +10,8 @@ end
 # 1. Ruby install
 # 2. get a git
 $script = <<SCRIPT
-gpg --keyserver hkp://keys.gnupg.net --recv-keys 409B6B1796C275462A
-1703113804BB82D39DC0E3
-curl -sSL https://get.rvm.io | bash -s stable
-
-source /etc/profile.d/rvm.sh
-
+yum install -y git-core rubygems
 cd ~
-yum install -y git
 git clone https://github.com/jyblues/chef.git
 sudo chmod +x ./chef/gameserver.sh
 sudo chmod +x ./chef/test.sh
