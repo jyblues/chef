@@ -26,3 +26,5 @@ curl -L http://www.opscode.com/chef/install.sh | sudo bash
 chef-solo -v
 
 gem install chef
+
+gem install knife-solo
